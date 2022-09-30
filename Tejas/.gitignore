@@ -3,4 +3,8 @@
 .project
 .settings/org.eclipse.ltk.core.refactoring.prefs
 **/*.class
+**/*.so
+**/*.o
+src/emulator/pin/obj-comm/SharedMem.h
+jars/tejas.jar
 bin
