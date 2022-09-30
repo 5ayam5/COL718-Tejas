@@ -287,4 +287,9 @@ public class TLB extends SimulationElement
 		
 	}
 	
+	public void flush()
+	{
+		TLBuffer = new Hashtable<Long, TLBEntry>(TLBSize);
+	}
+	
 }

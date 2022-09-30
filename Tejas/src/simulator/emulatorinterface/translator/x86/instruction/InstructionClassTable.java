@@ -210,6 +210,10 @@ public class InstructionClassTable {
 		instructionClassHandlerTable.put(
 				InstructionClass.CONDITIONAL_SET,
 				new ConditionalSet());
+
+		instructionClassHandlerTable.put(
+				InstructionClass.SYSCALL,
+				new Syscall());
 	}
 
 	private static void createInstructionClassTable() 
@@ -457,6 +461,8 @@ public class InstructionClassTable {
 		for(int i=0; i<ConditionalSet.length; i++)
 			instructionClassTable.put(ConditionalSet[i], 
 					InstructionClass.CONDITIONAL_SET);
+
+		instructionClassTable.put("syscall", InstructionClass.SYSCALL);
 	}
 
 	public static InstructionClass getInstructionClass(String operation) {

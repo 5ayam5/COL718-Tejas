@@ -86,5 +86,8 @@ public enum InstructionClass
 	SSE_DIVISION,
 	SSE_COMPARE_PACKED_DATA,
 	
+	//A2
+	SYSCALL,
+	
 	INVALID,   
 }
