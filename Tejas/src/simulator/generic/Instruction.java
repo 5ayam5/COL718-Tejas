@@ -159,6 +159,13 @@ public class Instruction implements Serializable
 		ins.set(OperationType.nop, null, null, null);
 		return ins;
 	}
+
+	public static Instruction getSyscallInstruction()
+	{
+		Instruction ins = CustomObjectPool.getInstructionPool().borrowObject();
+		ins.set(OperationType.syscall, null, null, null);
+		return ins;
+	}
 	
 	public static Instruction getIntegerDivisionInstruction(Operand sourceOperand1,
 			Operand sourceOperand2, Operand destinationOperand)

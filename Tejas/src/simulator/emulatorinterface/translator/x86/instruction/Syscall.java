@@ -4,6 +4,7 @@ package emulatorinterface.translator.x86.instruction;
 import emulatorinterface.translator.InvalidInstructionException;
 import emulatorinterface.translator.x86.registers.TempRegisterNum;
 import generic.Operand;
+import generic.Instruction;
 import generic.InstructionList;
 
 public class Syscall implements X86StaticInstructionHandler
@@ -14,6 +15,6 @@ public class Syscall implements X86StaticInstructionHandler
 			TempRegisterNum tempRegisterNum) 
 					throws InvalidInstructionException
 	{
-		System.out.println("Syscall called " + instructionPointer);
+		instructionArrayList.appendInstruction(Instruction.getSyscallInstruction());
 	}
 }

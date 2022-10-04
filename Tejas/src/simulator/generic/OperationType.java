@@ -39,6 +39,7 @@ public enum OperationType
 	xchg,
 	acceleratedOp,
 	nop,
+	syscall,
 	//TODO Software interrupt can also be modelled as a far jump
 	interrupt,
 	no_of_types,

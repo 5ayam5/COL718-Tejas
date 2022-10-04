@@ -11,6 +11,7 @@ public enum FunctionalUnitType {
 	floatDiv,
 	memory,
 	jump,
+	syscall,
 	no_of_types
 	
 }

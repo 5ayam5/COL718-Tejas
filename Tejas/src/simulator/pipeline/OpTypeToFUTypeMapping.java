@@ -47,6 +47,9 @@ public class OpTypeToFUTypeMapping {
 			case xchg		:	{
 									return FunctionalUnitType.integerALU;
 								}
+			case syscall    :   {
+									return FunctionalUnitType.syscall;
+								}
 			default			:	{
 									return FunctionalUnitType.inValid;
 								}

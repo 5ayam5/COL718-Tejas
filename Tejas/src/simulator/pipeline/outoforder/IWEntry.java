@@ -68,6 +68,7 @@ public class IWEntry {
 	
 	void issueLoadStore()
 	{
+		// TODO COL718 probably add clflush here (maybe syscall here as well but idk)?
 		//assertions
 		if(associatedROBEntry.getLsqEntry().isValid() == true)
 		{
