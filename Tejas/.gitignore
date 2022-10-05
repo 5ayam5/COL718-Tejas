@@ -8,3 +8,5 @@
 src/emulator/pin/obj-comm/SharedMem.h
 jars/tejas.jar
 bin
+log
+tests/run.out*

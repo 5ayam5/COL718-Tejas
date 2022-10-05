@@ -100,8 +100,6 @@ public class ExecutionCore {
 			FUs[FunctionalUnitType.memory.ordinal()][i] = FU;
 		}
 
-		// TODO COL718 add TLB flush FU, will need to also modify coreConfig (make it similar to jump since it is kind of a pseudo FU)
-		
 		this.numPorts = coreConfig.ExecutionCoreNumPorts;
 		portUsedThisCycle = new boolean[numPorts];
 

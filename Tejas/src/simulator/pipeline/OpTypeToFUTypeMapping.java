@@ -48,7 +48,7 @@ public class OpTypeToFUTypeMapping {
 									return FunctionalUnitType.integerALU;
 								}
 			case syscall    :   {
-									return FunctionalUnitType.syscall;
+									return FunctionalUnitType.memory;
 								}
 			default			:	{
 									return FunctionalUnitType.inValid;

@@ -29,6 +29,7 @@ import config.SystemConfig;
 
 import generic.*;
 import main.ArchitecturalComponent;
+import pipeline.outoforder.TLBFlushEvent;
 
 public class TLB extends SimulationElement
 {
@@ -228,8 +229,9 @@ public class TLB extends SimulationElement
 		if(event.getRequestType()==RequestType.Tlb_Miss_Response) {
 			long pageId = ((AddressCarryingEvent)event).getAddress();
 			addTLBEntry(pageId);
-		} else if (event.getRequestType() == RequestType.Tlb_Flush) { // TODO COL718 see how to call this request and where this should be called
+		} else if (event.getRequestType() == RequestType.Tlb_Flush) { // TODO COL718 set this to executed iff both TLBs get flushed
 			flush();
+			((TLBFlushEvent)event).getROBEntry().setExecuted(true);
 		} else {
 			misc.Error.showErrorAndExit("Invalid event sent to TLB : " + event);
 		}

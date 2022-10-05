@@ -55,9 +55,9 @@ public class IWEntry {
 			boolean issued = issueOthers();
 			
 			if(issued == true &&
-					(opType == OperationType.load || opType == OperationType.store))
+					(opType == OperationType.load || opType == OperationType.store || opType == OperationType.syscall))
 			{
-				issueLoadStore();
+				issueMemoryInstruction();
 			}
 			
 			return issued;
@@ -66,9 +66,22 @@ public class IWEntry {
 		return false;
 	}
 	
-	void issueLoadStore()
+	void issueMemoryInstruction()
 	{
-		// TODO COL718 probably add clflush here (maybe syscall here as well but idk)?
+		if (opType == OperationType.syscall) {
+			associatedROBEntry.setIssued(true);
+			execEngine.getCoreMemorySystem().getiTLB().sendEvent(new TLBFlushEvent(
+					core.getEventQueue(), 0, null,
+					execEngine.getCoreMemorySystem().getiTLB(), RequestType.Tlb_Flush,
+					associatedROBEntry
+				));
+			execEngine.getCoreMemorySystem().getdTLB().sendEvent(new TLBFlushEvent(
+					core.getEventQueue(), 0, null,
+					execEngine.getCoreMemorySystem().getdTLB(), RequestType.Tlb_Flush,
+					associatedROBEntry
+				));
+			return;
+		}
 		//assertions
 		if(associatedROBEntry.getLsqEntry().isValid() == true)
 		{
@@ -125,7 +138,7 @@ public class IWEntry {
 		
 		if(FURequest <= 0)
 		{
-			if(opType != OperationType.load && opType != OperationType.store)
+			if(opType != OperationType.load && opType != OperationType.store && opType != OperationType.syscall)
 			{
 				associatedROBEntry.setIssued(true);
 				associatedROBEntry.setFUInstance((int) ((-1) * FURequest));
