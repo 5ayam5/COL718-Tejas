@@ -70,16 +70,9 @@ public class IWEntry {
 	{
 		if (opType == OperationType.syscall) {
 			associatedROBEntry.setIssued(true);
-			execEngine.getCoreMemorySystem().getiTLB().sendEvent(new TLBFlushEvent(
-					core.getEventQueue(), 0, null,
-					execEngine.getCoreMemorySystem().getiTLB(), RequestType.Tlb_Flush,
-					associatedROBEntry
-				));
-			execEngine.getCoreMemorySystem().getdTLB().sendEvent(new TLBFlushEvent(
-					core.getEventQueue(), 0, null,
-					execEngine.getCoreMemorySystem().getdTLB(), RequestType.Tlb_Flush,
-					associatedROBEntry
-				));
+			associatedROBEntry.setExecuted(true);
+			associatedROBEntry.setWriteBackDone1(true);
+			associatedROBEntry.setWriteBackDone2(true);
 			return;
 		}
 		//assertions

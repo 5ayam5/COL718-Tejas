@@ -240,6 +240,18 @@ public class ReorderBuffer extends SimulationElement{
 					execEngine.getCoreMemorySystem().issueLSQCommit(first);
 				}
 				
+				if (firstOpType == OperationType.syscall)
+				{
+					execEngine.getCoreMemorySystem().getiTLB().sendEvent(new TLBFlushEvent(
+							core.getEventQueue(), 0, null,
+							execEngine.getCoreMemorySystem().getiTLB(), RequestType.Tlb_Flush,
+							first));
+					execEngine.getCoreMemorySystem().getdTLB().sendEvent(new TLBFlushEvent(
+							core.getEventQueue(), 0, null,
+							execEngine.getCoreMemorySystem().getdTLB(), RequestType.Tlb_Flush,
+							first));
+				}
+				
 				//free ROB entry
 				retireInstructionAtHead();
 				

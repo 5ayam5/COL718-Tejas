@@ -7,6 +7,7 @@ import generic.RequestType;
 
 public class TLBFlushEvent extends Event {
 	ReorderBufferEntry reorderBufferEntry;
+
 	public TLBFlushEvent(EventQueue eventQ,
 			long eventTime,
 			SimulationElement requestingElement,
