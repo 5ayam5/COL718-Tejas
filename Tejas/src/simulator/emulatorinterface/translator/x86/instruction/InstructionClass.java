@@ -88,6 +88,7 @@ public enum InstructionClass
 	
 	//A2
 	SYSCALL,
-	
+	CLFLUSH,	
+
 	INVALID,   
 }

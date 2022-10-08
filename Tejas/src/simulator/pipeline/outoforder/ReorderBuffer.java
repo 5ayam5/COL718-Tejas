@@ -1,4 +1,4 @@
-package pipeline.outoforder;
+ package pipeline.outoforder;
 
 import generic.Core;
 import generic.Event;
@@ -250,6 +250,11 @@ public class ReorderBuffer extends SimulationElement{
 							core.getEventQueue(), 0, null,
 							execEngine.getCoreMemorySystem().getdTLB(), RequestType.Tlb_Flush,
 							first));
+				}
+
+				if (firstOpType == OperationType.clflush)
+				{
+					// TODO sendEvents to flush the cache line correspondin to the required address
 				}
 				
 				//free ROB entry

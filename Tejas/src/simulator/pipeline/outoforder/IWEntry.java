@@ -55,7 +55,7 @@ public class IWEntry {
 			boolean issued = issueOthers();
 			
 			if(issued == true &&
-					(opType == OperationType.load || opType == OperationType.store || opType == OperationType.syscall))
+					(opType == OperationType.load || opType == OperationType.store || opType == OperationType.syscall || opType == OperationType.clflush))
 			{
 				issueMemoryInstruction();
 			}
@@ -69,6 +69,13 @@ public class IWEntry {
 	void issueMemoryInstruction()
 	{
 		if (opType == OperationType.syscall) {
+			associatedROBEntry.setIssued(true);
+			associatedROBEntry.setExecuted(true);
+			associatedROBEntry.setWriteBackDone1(true);
+			associatedROBEntry.setWriteBackDone2(true);
+			return;
+		}
+		else if (opType == OperationType.clflush) {
 			associatedROBEntry.setIssued(true);
 			associatedROBEntry.setExecuted(true);
 			associatedROBEntry.setWriteBackDone1(true);
@@ -131,7 +138,7 @@ public class IWEntry {
 		
 		if(FURequest <= 0)
 		{
-			if(opType != OperationType.load && opType != OperationType.store && opType != OperationType.syscall)
+			if(opType != OperationType.load && opType != OperationType.store && opType != OperationType.syscall && opType != OperationType.clflush)
 			{
 				associatedROBEntry.setIssued(true);
 				associatedROBEntry.setFUInstance((int) ((-1) * FURequest));

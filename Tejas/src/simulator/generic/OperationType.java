@@ -40,6 +40,7 @@ public enum OperationType
 	acceleratedOp,
 	nop,
 	syscall,
+	clflush,
 	//TODO Software interrupt can also be modelled as a far jump
 	interrupt,
 	no_of_types,

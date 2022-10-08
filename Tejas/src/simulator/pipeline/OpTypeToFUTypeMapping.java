@@ -50,6 +50,9 @@ public class OpTypeToFUTypeMapping {
 			case syscall    :   {
 									return FunctionalUnitType.memory;
 								}
+			case clflush	:   {
+									return FunctionalUnitType.memory;
+								}
 			default			:	{
 									return FunctionalUnitType.inValid;
 								}

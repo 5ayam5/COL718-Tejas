@@ -166,6 +166,13 @@ public class Instruction implements Serializable
 		ins.set(OperationType.syscall, null, null, null);
 		return ins;
 	}
+
+	public static Instruction getClflushInstruction(Operand sourceOperand)
+	{
+		Instruction ins = CustomObjectPool.getInstructionPool().borrowObject();
+		ins.set(OperationType.clflush, sourceOperand, null, null);
+		return ins;
+	}
 	
 	public static Instruction getIntegerDivisionInstruction(Operand sourceOperand1,
 			Operand sourceOperand2, Operand destinationOperand)

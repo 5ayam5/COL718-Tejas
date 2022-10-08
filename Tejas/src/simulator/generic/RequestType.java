@@ -111,7 +111,7 @@ public enum RequestType {
 	DirectoryEvictedFromCoherentCache,
 	DirectorySharedToExclusive,
 	
-	Cache_Hit, Cache_Miss,
+	Cache_Hit, Cache_Miss, Cache_Flush,
 
 	Tlb_Miss_Response, Tlb_Flush, Send_Migrate_Block,
 }

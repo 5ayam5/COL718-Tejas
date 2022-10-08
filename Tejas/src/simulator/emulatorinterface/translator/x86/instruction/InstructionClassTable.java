@@ -214,6 +214,11 @@ public class InstructionClassTable {
 		instructionClassHandlerTable.put(
 				InstructionClass.SYSCALL,
 				new Syscall());
+
+		instructionClassHandlerTable.put(
+				InstructionClass.CLFLUSH,
+				new Clflush());
+
 	}
 
 	private static void createInstructionClassTable() 
@@ -463,6 +468,7 @@ public class InstructionClassTable {
 					InstructionClass.CONDITIONAL_SET);
 
 		instructionClassTable.put("syscall", InstructionClass.SYSCALL);
+		instructionClassTable.put("clflush", InstructionClass.CLFLUSH);
 	}
 
 	public static InstructionClass getInstructionClass(String operation) {
