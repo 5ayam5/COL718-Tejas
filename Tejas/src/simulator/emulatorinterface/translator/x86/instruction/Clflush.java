@@ -16,6 +16,10 @@ public class Clflush implements X86StaticInstructionHandler
 					throws InvalidInstructionException
 	{
 		// operand1 is the memory address
-		instructionArrayList.appendInstruction(Instruction.getClflushInstruction(operand1));
+		if (operand1.isMemoryOperand()) {
+			instructionArrayList.appendInstruction(Instruction.getClflushInstruction(operand1));
+		} else {
+			misc.Error.invalidOperation("clflush invalid operand", operand1, operand2, operand3);
+		}
 	}
 }

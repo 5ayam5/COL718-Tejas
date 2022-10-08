@@ -167,10 +167,10 @@ public class Instruction implements Serializable
 		return ins;
 	}
 
-	public static Instruction getClflushInstruction(Operand sourceOperand)
+	public static Instruction getClflushInstruction(Operand memoryLocation)
 	{
 		Instruction ins = CustomObjectPool.getInstructionPool().borrowObject();
-		ins.set(OperationType.clflush, sourceOperand, null, null);
+		ins.set(OperationType.clflush, memoryLocation, null, null);
 		return ins;
 	}
 	
