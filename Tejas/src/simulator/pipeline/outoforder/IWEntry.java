@@ -68,34 +68,20 @@ public class IWEntry {
 	
 	void issueMemoryInstruction()
 	{
-		if (opType == OperationType.syscall) {
-			associatedROBEntry.setIssued(true);
-			associatedROBEntry.setExecuted(true);
-			associatedROBEntry.setWriteBackDone1(true);
-			associatedROBEntry.setWriteBackDone2(true);
-			return;
-		}
-		else if (opType == OperationType.clflush) {
-			associatedROBEntry.setIssued(true);
-			associatedROBEntry.setExecuted(true);
-			associatedROBEntry.setWriteBackDone1(true);
-			associatedROBEntry.setWriteBackDone2(true);
-			return;
-		}
 		//assertions
-		if(associatedROBEntry.getLsqEntry().isValid() == true)
-		{
-			misc.Error.showErrorAndExit("attempting to issue a load/store.. address is already valid");
-		}		
-		if(associatedROBEntry.getLsqEntry().isForwarded() == true)
-		{
-			misc.Error.showErrorAndExit("attempting to issue a load/store.. value forwarded is already valid");
+		if (opType == OperationType.load || opType == OperationType.store) {
+			if (associatedROBEntry.getLsqEntry().isValid() == true) {
+				misc.Error.showErrorAndExit("attempting to issue a load/store.. address is already valid");
+			}
+			if (associatedROBEntry.getLsqEntry().isForwarded() == true) {
+				misc.Error.showErrorAndExit("attempting to issue a load/store.. value forwarded is already valid");
+			}
 		}
 		
 		associatedROBEntry.setIssued(true);
-		if(opType == OperationType.store)
+		if(opType == OperationType.store || opType == OperationType.syscall || opType == OperationType.clflush)
 		{
-			//stores are issued at commit stage
+			// these are issued at commit stage
 			
 			associatedROBEntry.setExecuted(true);
 			associatedROBEntry.setWriteBackDone1(true);
@@ -106,9 +92,10 @@ public class IWEntry {
 		instructionWindow.removeFromWindow(this);
 		
 		//tell LSQ that address is available
-		execEngine.getCoreMemorySystem().issueRequestToLSQ(
-				null, 
-				associatedROBEntry);
+		if (opType == OperationType.load || opType == OperationType.store)
+			execEngine.getCoreMemorySystem().issueRequestToLSQ(
+					null, 
+					associatedROBEntry);
 
 		if(SimulationConfig.debugMode)
 		{
