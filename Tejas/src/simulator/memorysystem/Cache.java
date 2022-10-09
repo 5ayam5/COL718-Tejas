@@ -275,6 +275,11 @@ public class Cache extends SimulationElement {
 				handleAckDirectoryWriteHit(event);
 				break;
 			}
+
+			case Cache_Line_Flush: {
+				handleCacheLineFlush(addr);
+				break;
+			}
 		}
 	}
 
@@ -604,6 +609,22 @@ public class Cache extends SimulationElement {
 			eventsWaitingOnMSHR.remove(event);
 			i--;
 			size--;
+		}
+	}
+
+	protected void handleCacheLineFlush(long addr) {
+		CacheLine cacheLine = this.access(addr);
+		if (cacheLine != null) {
+			if (cacheLine.isModified()) {
+				if (writePolicy == WritePolicy.WRITE_BACK)
+					sendRequestToNextLevel(addr, RequestType.Cache_Write);
+				sendRequestToNextLevel(addr, RequestType.Cache_Line_Flush);
+			}
+			if (mycoherence != null) {
+				AddressCarryingEvent evictEvent = mycoherence.evictedFromCoherentCache(addr, this);
+				mshr.addToMSHR(evictEvent);
+			} else
+				sendEvent(new AddressCarryingEvent(getEventQueue(), 0, this, this, RequestType.EvictCacheLine, addr));
 		}
 	}
 

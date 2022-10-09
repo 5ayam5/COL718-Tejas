@@ -16,6 +16,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import main.CustomObjectPool;
+import memorysystem.AddressCarryingEvent;
 import memorysystem.Cache;
 import config.EnergyConfig;
 import config.SimulationConfig;
@@ -243,18 +244,25 @@ public class ReorderBuffer extends SimulationElement{
 				if (firstOpType == OperationType.syscall)
 				{
 					execEngine.getCoreMemorySystem().getiTLB().sendEvent(new TLBFlushEvent(
-							core.getEventQueue(), 0, null,
+							core.getEventQueue(), 0, this,
 							execEngine.getCoreMemorySystem().getiTLB(), RequestType.Tlb_Flush,
 							first));
 					execEngine.getCoreMemorySystem().getdTLB().sendEvent(new TLBFlushEvent(
-							core.getEventQueue(), 0, null,
+							core.getEventQueue(), 0, this,
 							execEngine.getCoreMemorySystem().getdTLB(), RequestType.Tlb_Flush,
 							first));
 				}
 
 				if (firstOpType == OperationType.clflush)
 				{
-					// TODO sendEvents to flush the cache line correspondin to the required address
+					Cache l1Cache = execEngine.getCoreMemorySystem().getL1Cache();
+					l1Cache.sendEvent(new AddressCarryingEvent(l1Cache.getEventQueue(), 0, this, l1Cache,
+							RequestType.Cache_Line_Flush, first.getInstruction().getSourceOperand1MemValue()));
+					
+					// same for icache
+					Cache iCache = execEngine.getCoreMemorySystem().getiCache();
+					iCache.sendEvent(new AddressCarryingEvent(l1Cache.getEventQueue(), 0, this, iCache,
+							RequestType.Cache_Line_Flush, first.getInstruction().getSourceOperand1MemValue()));
 				}
 				
 				//free ROB entry
