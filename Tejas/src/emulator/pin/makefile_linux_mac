@@ -1,4 +1,4 @@
-PIN_KIT ?=/home/sayam2/COL718/pin-3.24-98612-g6bd5931f2-gcc-linux
+PIN_KIT ?=/home/sayam2/no_space_IITD/COL718/pin-3.24-98612-g6bd5931f2-gcc-linux
 CXX=$(shell make PIN_ROOT=$(PIN_KIT) VAR=CXX -f pin_makefile print_var)
 LINKER=$(shell make PIN_ROOT=$(PIN_KIT) VAR=LINKER -f pin_makefile print_var)
 TOOL_CXXFLAGS=$(shell make PIN_ROOT=$(PIN_KIT) VAR=TOOL_CXXFLAGS -f pin_makefile print_var) 

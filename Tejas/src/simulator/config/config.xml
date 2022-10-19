@@ -2,16 +2,16 @@
 <Configuration>
 	<Emulator>
 	
-		<EmulatorType>pin</EmulatorType>  
-		<CommunicationType>sharedMemory</CommunicationType>  
+		<EmulatorType>none</EmulatorType>  
+		<CommunicationType>file</CommunicationType>  
 		<StoreExecutionTraceInAFile>true</StoreExecutionTraceInAFile>
-		<BasenameForTraceFiles>/home/sayam2/COL718/Tejas/tests/thread</BasenameForTraceFiles>
-		<Tejashome>/home/sayam2/COL718/Tejas</Tejashome>
-		<PinTool>/home/sayam2/COL718/pin-3.24-98612-g6bd5931f2-gcc-linux</PinTool>
-		<PinInstrumentor>/home/sayam2/COL718/Tejas/src/emulator/pin/obj-pin/causalityTool.so</PinInstrumentor>
+		<BasenameForTraceFiles>/home/sayam2/no_space_IITD/COL718/Tejas/tests/thread</BasenameForTraceFiles>
+		<Tejashome>/home/sayam2/no_space_IITD/COL718/Tejas</Tejashome>
+		<PinTool>/home/sayam2/no_space_IITD/COL718/pin-3.24-98612-g6bd5931f2-gcc-linux</PinTool>
+		<PinInstrumentor>/home/sayam2/no_space_IITD/COL718/Tejas/src/emulator/pin/obj-pin/causalityTool.so</PinInstrumentor>
 		<QemuTool>qemu.o</QemuTool>
-		<ShmLibDirectory>/home/sayam2/COL718/Tejas/src/emulator/pin/obj-comm</ShmLibDirectory>
-		<KillEmulatorScript>/home/sayam2/COL718/Tejas/src/simulator/main/killAllDescendents.sh</KillEmulatorScript>
+		<ShmLibDirectory>/home/sayam2/no_space_IITD/COL718/Tejas/src/emulator/pin/obj-comm</ShmLibDirectory>
+		<KillEmulatorScript>/home/sayam2/no_space_IITD/COL718/Tejas/src/simulator/main/killAllDescendents.sh</KillEmulatorScript>
 	</Emulator>
 	<ISA>
 		<ISAType>x86</ISAType> 
@@ -43,7 +43,7 @@
 		<IndexAddrModeEnable>0</IndexAddrModeEnable>		
 		<EmuCores>0</EmuCores>					
 		<JavaCores>1</JavaCores>				
-		<DebugMode>false</DebugMode>				
+		<DebugMode>true</DebugMode>				
 		<DetachMemSysData>false</DetachMemSysData>
 		<DetachMemSysInsn>false</DetachMemSysInsn>
 		<PrintPowerStats>true</PrintPowerStats>
@@ -66,17 +66,9 @@
 
 	<Applications>
 	    <Benchmark>
-        	<BenchmarkPath>/home/omais/Desktop/cpu2006/403.gcc_50M/gcc</BenchmarkPath>
+        	<BenchmarkPath>/home/sayam2/no_space_IITD/COL718/Assignment2/Traces/sample_trace</BenchmarkPath>
         	<Threads>1</Threads>
-            </Benchmark>
-    	    <Benchmark>
-        	<BenchmarkPath>/home/omais/Desktop/cpu2006/435.gromacs_50M/gromacs</BenchmarkPath>
-        	<Threads>0</Threads>
-    	    </Benchmark>
-	    <Benchmark>
-        	<BenchmarkPath>/home/omais/Desktop/cpu2006/453.povray_50M/povray</BenchmarkPath>
-        	<Threads>0</Threads>
-    	    </Benchmark>
+        </Benchmark>
    	</Applications>
 
 	
@@ -325,7 +317,7 @@
 		<Interconnect>NOC</Interconnect>
 		
 		<NOC>
-			<NocConfigFile>/home/sayam2/COL718/Tejas/src/simulator/config/NocConfig.txt</NocConfigFile>
+			<NocConfigFile>/home/sayam2/no_space_IITD/COL718/Tejas/src/simulator/config/NocConfig.txt</NocConfigFile>
 			<NocSelScheme>STATIC</NocSelScheme>
 			<NocNumberOfBuffers>4</NocNumberOfBuffers>
 			<NocPortType>FCFS</NocPortType>
