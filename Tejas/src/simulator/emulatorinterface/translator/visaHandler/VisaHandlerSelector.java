@@ -23,6 +23,7 @@ public class VisaHandlerSelector
 	private static DynamicInstructionHandler interrupt;
 	private static DynamicInstructionHandler syscall;
 	private static DynamicInstructionHandler clflush;
+	private static DynamicInstructionHandler mfence;
 
 	public static DynamicInstructionHandler selectHandler(OperationType operationType)
 	{
@@ -88,6 +89,9 @@ public class VisaHandlerSelector
 
 			case clflush:
 				return clflush;
+			
+			case mfence:
+				return mfence;
 				
 			default:
 				System.out.print("Invalid operation");
@@ -116,5 +120,6 @@ public class VisaHandlerSelector
 		interrupt = new Interrupt();
 		syscall = new Syscall();
 		clflush = new Clflush();
+		mfence = new MFence();
 	}
 }

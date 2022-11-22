@@ -42,6 +42,7 @@ public enum RequestType {
 	BOOT_PIPELINE,
 	BROADCAST,
 	
+	MFence,
 	Tell_LSQ_Addr_Ready,
 	Validate_LSQ_Addr,
 	Attempt_L1_Issue,

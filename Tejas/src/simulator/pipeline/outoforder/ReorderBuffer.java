@@ -112,6 +112,8 @@ public class ReorderBuffer extends SimulationElement{
 			newReorderBufferEntry.setAssociatedIWEntry(null);
 			
 			newReorderBufferEntry.setValid(true);
+
+			newReorderBufferEntry.setTime(GlobalClock.getCurrentTime());
 			
 			incrementNumAccesses(1);
 			
@@ -162,6 +164,9 @@ public class ReorderBuffer extends SimulationElement{
 			ReorderBufferEntry first = ROB[head];
 			Instruction firstInstruction = first.getInstruction();
 			OperationType firstOpType = firstInstruction.getOperationType();								
+			
+			if (firstOpType == OperationType.mfence && !first.getExecuted())
+				execEngine.getCoreMemorySystem().getLsqueue().executeFence(first);
 			
 			if(first.isWriteBackDone() == true)
 			{

@@ -9,6 +9,7 @@ import generic.GlobalClock;
 import generic.Instruction;
 import generic.OperationType;
 import generic.RequestType;
+import memorysystem.MFenceEvent;
 
 /**
  * represents an entry in the instruction window
@@ -55,7 +56,7 @@ public class IWEntry {
 			boolean issued = issueOthers();
 			
 			if(issued == true &&
-					(opType == OperationType.load || opType == OperationType.store || opType == OperationType.syscall || opType == OperationType.clflush))
+					(opType == OperationType.load || opType == OperationType.store || opType == OperationType.syscall || opType == OperationType.clflush || opType == OperationType.mfence))
 			{
 				issueMemoryInstruction();
 			}
@@ -82,7 +83,6 @@ public class IWEntry {
 		if(opType == OperationType.store || opType == OperationType.syscall || opType == OperationType.clflush)
 		{
 			// these are issued at commit stage
-			
 			associatedROBEntry.setExecuted(true);
 			associatedROBEntry.setWriteBackDone1(true);
 			associatedROBEntry.setWriteBackDone2(true);
@@ -96,6 +96,9 @@ public class IWEntry {
 			execEngine.getCoreMemorySystem().issueRequestToLSQ(
 					null, 
 					associatedROBEntry);
+		
+		if (opType == OperationType.mfence)
+			execEngine.getCoreMemorySystem().getLsqueue().sendEvent(new MFenceEvent(core.getEventQueue(), 0, execEngine.getCoreMemorySystem(), execEngine.getCoreMemorySystem().getLsqueue(), RequestType.MFence, associatedROBEntry));
 
 		if(SimulationConfig.debugMode)
 		{
@@ -125,7 +128,7 @@ public class IWEntry {
 		
 		if(FURequest <= 0)
 		{
-			if(opType != OperationType.load && opType != OperationType.store && opType != OperationType.syscall && opType != OperationType.clflush)
+			if(opType != OperationType.load && opType != OperationType.store && opType != OperationType.syscall && opType != OperationType.clflush && opType != OperationType.mfence)
 			{
 				associatedROBEntry.setIssued(true);
 				associatedROBEntry.setFUInstance((int) ((-1) * FURequest));

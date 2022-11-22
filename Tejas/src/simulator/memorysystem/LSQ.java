@@ -22,6 +22,7 @@ package memorysystem;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Queue;
 
 import config.EnergyConfig;
 
@@ -45,6 +46,8 @@ public class LSQ extends SimulationElement
 	public long NoOfSt = 0;
 	public long NoOfForwards = 0; // Total number of forwards made by the LSQ
 
+	protected Queue<MFenceEvent> fenceQueue;
+
 	long numAccesses;
 
 	public LSQ(PortType portType, int noOfPorts, long occupancy, long latency, CoreMemorySystem containingMemSys, int lsqSize) 
@@ -63,6 +66,8 @@ public class LSQ extends SimulationElement
 			entry.setIndexInQ(i);
 			lsqueue[i] = entry;
 		}
+
+		fenceQueue = new java.util.LinkedList<MFenceEvent>();
 	}
 
 	public LSQEntry addEntry(boolean isLoad, long address, ReorderBufferEntry robEntry) //To be accessed at the time of allocating the entry
@@ -297,23 +302,50 @@ public class LSQ extends SimulationElement
 		lsqueue[index].setRemoved(true);
 	}
 
+	private boolean allEntriesNewerThanFence(long time)
+	{
+		for (int i = 0; i < lsqSize; i++)
+		{
+			if (lsqueue[i].getRobEntry().getTime() < time)
+				return false;
+		}
+		return true;
+	}
+
 	public void handleEvent(EventQueue eventQ, Event event)
 	{
-		if (event.getRequestType() == RequestType.Tell_LSQ_Addr_Ready)
+		if (!fenceQueue.isEmpty() && allEntriesNewerThanFence(fenceQueue.peek().getEventTime()))
 		{
-			handleAddressReady(eventQ, event);
+			MFenceEvent fenceEvent = fenceQueue.poll();
+			((OutOrderCoreMemorySystem)containingMemSys).sendExecComplete(fenceEvent.getROBEntry());
 		}
-		else if (event.getRequestType() == RequestType.Validate_LSQ_Addr)
+		if (event.getRequestType() == RequestType.MFence)
 		{
-			handleAddrValidate(eventQ, event);
+			addFence((MFenceEvent) event);
 		}
-		else if (event.getRequestType() == RequestType.LSQ_Commit)
+		else
 		{
-			handleCommitsFromROB(eventQ, event);
-		}
-		else if (event.getRequestType() == RequestType.Attempt_L1_Issue)
-		{
-			handleAttemptL1Issue(event);
+			if (!fenceQueue.isEmpty() && ((LSQEntryContainingEvent)event).getLsqEntry().getRobEntry().getTime() > fenceQueue.peek().getEventTime())
+			{
+				event.addEventTime(1);
+				event.getEventQ().addEvent(event);
+			}
+			else if (event.getRequestType() == RequestType.Tell_LSQ_Addr_Ready)
+			{
+				handleAddressReady(eventQ, event);
+			}
+			else if (event.getRequestType() == RequestType.Validate_LSQ_Addr)
+			{
+				handleAddrValidate(eventQ, event);
+			}
+			else if (event.getRequestType() == RequestType.LSQ_Commit)
+			{
+				handleCommitsFromROB(eventQ, event);
+			}
+			else if (event.getRequestType() == RequestType.Attempt_L1_Issue)
+			{
+				handleAttemptL1Issue(event);
+			}
 		}
 	}
 
@@ -526,5 +558,17 @@ committed
 		EnergyConfig power = new EnergyConfig(containingMemSys.core.getLsqPower(), numAccesses);
 		power.printEnergyStats(outputFileWriter, componentName);
 		return power;
+	}
+
+	public void addFence(MFenceEvent mFenceEvent)
+	{
+		fenceQueue.add(mFenceEvent);
+	}
+
+	public void executeFence(ReorderBufferEntry reorderBufferEntry)
+	{
+		if (!fenceQueue.isEmpty() && fenceQueue.peek().getROBEntry() == reorderBufferEntry)
+			fenceQueue.poll();
+		((OutOrderCoreMemorySystem) containingMemSys).sendExecComplete(reorderBufferEntry);
 	}
 }

@@ -643,6 +643,11 @@ public class ObjParser
 						operand1, operand2, operand3, 
 						assemblyPacketList);
 					
+					if (instructionPointer % 1000 == 0)
+					{
+						assemblyPacketList.appendInstruction(Instruction.getMFenceInstruction());
+					}
+					
 					//Add to translated-instruction cache
 					TranslatedInstructionCache.add(asmText, assemblyPacketList);
 				}

@@ -47,10 +47,9 @@ public class OpTypeToFUTypeMapping {
 			case xchg		:	{
 									return FunctionalUnitType.integerALU;
 								}
-			case syscall    :   {
-									return FunctionalUnitType.memory;
-								}
-			case clflush	:   {
+			case syscall    :
+			case clflush	:
+			case mfence     :   {
 									return FunctionalUnitType.memory;
 								}
 			default			:	{

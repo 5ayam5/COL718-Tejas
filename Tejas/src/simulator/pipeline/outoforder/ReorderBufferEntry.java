@@ -28,6 +28,7 @@ public class ReorderBufferEntry {
 	private boolean isWriteBackDone2;
 	private IWEntry associatedIWEntry;
 	private LSQEntry lsqEntry = null;
+	private long time;
 	
 	int pos;
 	
@@ -230,6 +231,14 @@ public class ReorderBufferEntry {
 
 	public void setValid(boolean isValid) {
 		this.isValid = isValid;
+	}
+
+	public long getTime() {
+		return time;
+	}
+
+	public void setTime(long time) {
+		this.time = time;
 	}
 
 	public String toString()
