@@ -234,6 +234,13 @@ public class ObjParser
 				operand3 = OperandTranslator.simplifyOperand(operand3Str, instructionList, tempRegisterNum);
 				
 				handler.handle(instructionPointer, operand1, operand2, operand3, instructionList, tempRegisterNum);
+
+				for (int i = microOpsIndexBefore; i < instructionList.length(); i++) {
+					if (instructionList.get(i).getOperationType() == OperationType.load || instructionList.get(i).getOperationType() == OperationType.store) {
+						instructionList.appendInstruction(Instruction.getMFenceInstruction());
+						break;
+					}
+				}
 				
 				//now set the ip of all converted instructions to instructionPointer
 				for(int i=microOpsIndexBefore; i<instructionList.length(); i++)

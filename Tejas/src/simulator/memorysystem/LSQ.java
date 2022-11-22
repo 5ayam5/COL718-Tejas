@@ -306,7 +306,7 @@ public class LSQ extends SimulationElement
 	{
 		for (int i = 0; i < lsqSize; i++)
 		{
-			if (lsqueue[i].getRobEntry().getTime() < time)
+			if (!lsqueue[i].isRemoved() && lsqueue[i].getRobEntry().getTime() < time)
 				return false;
 		}
 		return true;
