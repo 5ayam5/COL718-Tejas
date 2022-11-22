@@ -314,7 +314,7 @@ public class LSQ extends SimulationElement
 
 	public void handleEvent(EventQueue eventQ, Event event)
 	{
-		if (!fenceQueue.isEmpty() && allEntriesNewerThanFence(fenceQueue.peek().getEventTime()))
+		if (!fenceQueue.isEmpty() && allEntriesNewerThanFence(fenceQueue.peek().getROBEntry().getTime()))
 		{
 			MFenceEvent fenceEvent = fenceQueue.poll();
 			((OutOrderCoreMemorySystem)containingMemSys).sendExecComplete(fenceEvent.getROBEntry());
@@ -325,7 +325,8 @@ public class LSQ extends SimulationElement
 		}
 		else
 		{
-			if (!fenceQueue.isEmpty() && ((LSQEntryContainingEvent)event).getLsqEntry().getRobEntry().getTime() > fenceQueue.peek().getEventTime())
+			if (!fenceQueue.isEmpty() && ((LSQEntryContainingEvent)event).getLsqEntry().getRobEntry().getTime() > fenceQueue.peek().getROBEntry()
+					.getTime())
 			{
 				event.addEventTime(1);
 				event.getEventQ().addEvent(event);
